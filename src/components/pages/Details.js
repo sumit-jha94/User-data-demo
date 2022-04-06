@@ -1,13 +1,18 @@
 import React, { useState, useEffect }  from 'react';
 import { useParams } from 'react-router-dom';
 
+
+
+
 const Details = (props) => {
     const { id: userid } = useParams()
-
-    const [data, setData] = useState(null);
+    const [data, setData] = useState(1);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-  
+
+
+
+
     useEffect(() => {
       fetch(`https://datapeace-storage.s3-us-west-2.amazonaws.com/dummy_data/users.json?_limit=20`)
         .then((response) => {
@@ -50,16 +55,16 @@ const Details = (props) => {
                 <p> City: {city}</p>
                 <p> State: {state}</p>
                 <p> Zip Code: {zip}</p>
-                
                 </p>
-                
                 : null
-           
                 ))}
                 </td> 
-
+               
+          
                 </table>
-    )
+
+               
+    );
 }
 
 export default Details
