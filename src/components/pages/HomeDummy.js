@@ -29,7 +29,7 @@ export default function HomeDummy() {
       })
       .then((actualData) => {
         setData(actualData);
-        
+        setPaginatedPost(_(actualData).slice(0).take(pageSize).value());
         setError(null);
       })
       .catch((err) => {
@@ -103,8 +103,8 @@ export default function HomeDummy() {
             </thead>
             <tbody>
                 { 
-                data &&
-                data.map(({id, first_name, last_name, email, web, age})=> (
+                paginatedPost &&
+                paginatedPost.map(({id, first_name, last_name, email, web, age})=> (
                         <tr key={id}>
                             <td className='table-primary'>{id}</td>
                             <td className='table-secondary'>
