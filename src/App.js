@@ -9,10 +9,6 @@ import {
   Routes
 } from "react-router-dom";
 
-
-
-
-
 function App() {  
   return (
     <Router>
@@ -22,8 +18,6 @@ function App() {
         
         <Route path="/user/:id" element={<Details />} /> 
         
-       
-
       </Routes>
     </Router>
     

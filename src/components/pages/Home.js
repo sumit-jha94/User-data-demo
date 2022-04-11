@@ -4,7 +4,7 @@ import _ from "lodash";
 
 
 let pageSize = 50;
-export default function HomeDummy() {
+export default function Home() {
   const [data, setData] = useState(null);
   const [paginatedPost, setPaginatedPost] = useState();
   const [loading, setLoading] = useState(true);
