@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-import { paginationClasses } from "@mui/material";
+
 
 let pageSize = 50;
 export default function HomeDummy() {
@@ -11,6 +11,30 @@ export default function HomeDummy() {
   const [error, setError] = useState(null);
   const [input, setInput] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [order, setOrder] = useState("ASC");
+
+  const sorting =(col)=>{
+    if (order === "ASC") {
+      const sorted = [...paginatedPost].sort((a,b)=>
+      a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      );
+      setPaginatedPost(sorted);
+      console.log(sorted);
+      setOrder("DSC");
+    
+    }
+
+    if (order === "DSC") {
+      const sorted = [...paginatedPost].sort((a,b)=>
+      a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      );
+      setPaginatedPost(sorted);
+      setOrder("ASC");
+    }
+
+
+
+  }
 
   useEffect(() => {
     fetchUser(1);
@@ -61,8 +85,7 @@ export default function HomeDummy() {
       setData(null)
       await fetchUser(1);
       let filteredData = data.filter(x => String(x.first_name).toLowerCase().includes(search.toLowerCase()));
-      console.log(filteredData);
-      console.log('testtttt : ' + search)
+  
       setData(filteredData);
     }else{
       setData(null)
@@ -103,11 +126,11 @@ export default function HomeDummy() {
             <thead>
                 <tr className='table-active'>
                     <th className='table-primary'> Sr. No.</th>
-                    <th className='table-secondary'>First Name </th>
-                    <th className='table-success'>Last Name</th>
-                    <th className='table-danger'>Email Address</th>
-                    <th className='table-warning'>Website</th>
-                    <th className='table-info'>Age</th>
+                    <th className='table-secondary' onClick={()=>sorting("first_name")}>First Name </th>
+                    <th className='table-success' onClick={()=>sorting("last_name")}>Last Name</th>
+                    <th className='table-danger' onClick={()=>sorting("email")}>Email Address</th>
+                    <th className='table-warning' onClick={()=>sorting("web")}>Website</th>
+                    <th className='table-info'onClick={()=>("age")}>Age</th>
                 </tr>
             </thead>
             <tbody>
@@ -138,10 +161,7 @@ export default function HomeDummy() {
                       <li className={data === currentPage? "page-item active" : "page-item"}>
                         
                         <p className="page-link" 
-                        onClick={() =>pagination(data)}
-
-                        
-                        
+                        onClick={() =>pagination(data)} 
                         >{data}</p>
                         
                         </li>

@@ -1,24 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import _ from "lodash";
-import { paginationClasses } from "@mui/material";
 
-let pageSize = 50;
-export default function HomeDummy() {
+export default function Home() {
   const [data, setData] = useState(null);
-  const [paginatedPost, setPaginatedPost] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [input, setInput] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
+
+  // const onLinkClick = = () => {
+  //   window.open("http://twitter.com/saigowthamr");
+  // };
 
   useEffect(() => {
     fetchUser(1);
   }, []);
 
-  
   async function fetchUser(check=2) {
-      setLoading(true)
     if(check === 1 ){
       await fetch(`https://datapeace-storage.s3-us-west-2.amazonaws.com/dummy_data/users.json?_limit=20`)
       .then((response) => {
@@ -31,7 +27,6 @@ export default function HomeDummy() {
       })
       .then((actualData) => {
         setData(actualData);
-        setPaginatedPost(_(actualData).slice(0).take(pageSize).value());
         setError(null);
       })
       .catch((err) => {
@@ -44,11 +39,14 @@ export default function HomeDummy() {
     }
   }
 
+  const [input, setInput] = useState('');
 
   const onInputChange = (ev) => {
     setInput(ev.target.value);
+    console.log(ev.target.value)
     searchUser(ev.target.value)
   }
+
 
   const onButton = (ev) => {
     setInput(ev.target.value);
@@ -56,7 +54,7 @@ export default function HomeDummy() {
   }
 
   async function searchUser(search){
-    
+    console.log(search+'rrrrrrrrrrrrr')
     if(search != ''){
       setData(null)
       await fetchUser(1);
@@ -70,21 +68,9 @@ export default function HomeDummy() {
     }
   }
 
-  const pageCount = data ? Math.ceil(data.length/pageSize):0;
-  if (pageCount === 1) return null;
-
-  const pages = _.range(1, pageCount+1);
-
-  const pagination = (pageNo) => {
-    setCurrentPage(pageNo);
-    const startIndex = (pageNo - 1) * pageSize;
-    const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
-    setPaginatedPost(paginatedPost)
-  }
-
   return (
-    <div>
-      <div className="float-xl-right">
+    <div className="App">
+      <div>
         <input type="text"
         placeholder='Type Query'
         name="search"
@@ -93,67 +79,72 @@ export default function HomeDummy() {
         <button type='button' onClick={onButton}> Search</button>
       </div>
 
-      <h1 className="text-center text-primary text-uppercase">Data Sheet</h1>
+      <h1>Data Sheet</h1>
 
       {loading && <div>A moment please...</div>}
       {error && (
         <div>{`There is a problem fetching the post data - ${error}`}</div>
       )}
-      <table className='table table-hover table-responsive table-bordered' >
-            <thead>
-                <tr className='table-active'>
-                    <th className='table-primary'> Sr. No.</th>
-                    <th className='table-secondary'>First Name </th>
-                    <th className='table-success'>Last Name</th>
-                    <th className='table-danger'>Email Address</th>
-                    <th className='table-warning'>Website</th>
-                    <th className='table-info'>Age</th>
-                </tr>
-            </thead>
-            <tbody>
-                { 
-                paginatedPost &&
-                paginatedPost.map(({id, first_name, last_name, email, web, age})=> (
-                        <tr key={id}>
-                            <td className='table-primary'>{id}</td>
-                            <td className='table-secondary'>
-                            <Link to={`/user/${id} `}>
-                            {first_name} </Link>
-                            </td>
-                            <td className='table-success'>{last_name}</td>
-                            <td className='table-danger'>{email}</td>
-                            <td className='table-warning'>{web}</td>
-                            <td className='table-info'>{age}</td>
-                        </tr>
-                    ))}
-                
-            </tbody>
-        </table>
+      <table border="2" cellpadding="30" responsive="md">
 
-        <nav className="Page navigation example">
-          <ul className="pagination justify-content-center">
+    
 
-                  {
-                    pages.map((data) =>(
-                      <li className={data === currentPage? "page-item active" : "page-item"}>
-                        
-                        <p className="page-link" 
-                        onClick={() =>pagination(data)}
+      <td> <h3>Sr. No. </h3>
+              {data &&
+                data.map(({ id, first_name, last_name, email, web, age }) => (
+                    <ol key={id}> {id}</ol>
+               ))}
+               </td>
 
-                        
-                        
-                        >{data}</p>
-                        
-                        </li>
-                    ))
-                  }
 
-            
-            
-            
-          </ul>
-        </nav>
+         {/* First Name Table */}
+        <td> <h3>First Name </h3>
 
+              {data &&
+                data.map(({ id, first_name, last_name, email, web, age }) => (
+                  <Link to={`/user/${id} `}>
+                    <p key={id}> {first_name}</p>
+                    </Link>
+               ))}
+
+               </td>
+
+
+          {/* Last Name Table */}
+        <td > <h3>Last Name</h3>
+              {data &&
+                data.map(({ id, first_name, last_name, email, web, age }) => (
+                    <p key={id}>{last_name}</p>
+               ))}
+               </td>
+
+                {/* email Table */}
+        <td> <h3>Email Address</h3>
+              {data &&
+                data.map(({ id, first_name, last_name, email, web, age }) => (
+                    <p key={id}>{email}</p>
+               ))}
+               </td>
+
+               {/* web Table */}
+        <td> <h3>Website</h3>
+              {data &&
+                data.map(({ id, first_name, last_name, email, web, age }) => (
+                    <p key={id}>{web}</p>
+               ))}
+               </td>
+
+               {/* age Table */}
+                      <td> <h3>Age</h3>
+                        {data &&
+                          data.map(({ id, first_name, last_name, email, web, age }) => (
+                              <p key={id}>{age}</p>
+                      ))}
+                      </td>
+
+
+
+             </table>
     </div>
   );
 }

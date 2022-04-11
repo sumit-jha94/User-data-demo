@@ -1,3 +1,4 @@
+import { Button } from "bootstrap";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -37,48 +38,78 @@ const PaginationPage = (props) => {
     
 
   return (
-    <table border="2" cellpadding="30" responsive="md">
-      <td>
-        <h2>Details Of ID</h2>
-        {data &&
+
+    <div className="row justify-content-center">
+      <div className="col-auto">
+   
+    <table className="table table-striped">
+     
+       <h2 className="  text-center text-danger text-uppercase">Full Details of data</h2>
+      
+       <tbody className=" table-hover ">
+       {data &&
           data.map(
-            ({
-              id,
-              first_name,
-              last_name,
-              email,
-              web,
-              age,
-              company_name,
-              city,
-              state,
-              zip
+            ({id,first_name, last_name, email, web, age, company_name, city, state,  zip 
             }) =>
               userid == id ? (
                 <p key={id}>
-                  <p> First Name: {first_name}</p>
-                  <p> Last Name: {last_name}</p>
-                  <p> Email Id: {email}</p>
-                  <p> Website: {web}</p>
-                  <p> Age: {age}</p>
-                  <p> Company Name: {company_name}</p>
-                  <p> City: {city}</p>
-                  <p> State: {state}</p>
-                  <p> Zip Code: {zip}</p>
+
+
+                  <tr className="table-primary">
+                    <th >First Name:</th>
+                    <td>{first_name}</td>
+                  </tr>
+                  
+
+                  <tr className="table-success " >
+                    <th >Last Name:</th>
+                    <td >{last_name}</td>
+                  </tr>
+
+                  <tr className="table-warning" >
+                    <th>Email Id:</th>
+                    <td>{email}</td>
+                  </tr>
+
+                  <tr className="table-danger" >
+                    <th>Website:</th>
+                    <td>{web}</td>
+                  </tr>
+
+                  <tr className="table-info" >
+                    <th>Age:</th>
+                    <td>{age}</td>
+                  </tr>
+
+                  <tr className="bg-warning" >
+                    <th>Company Name:</th>
+                    <td>{company_name}</td>
+                  </tr>
+
+                  <tr className="bg-danger" >
+                    <th>City:</th>
+                    <td>{city}</td>
+                  </tr>
+
+                  <tr className="bg-info" >
+                    <th>State:</th>
+                    <td>{state}</td>
+                  </tr>
+
+                  <tr className="table-warning" >
+                    <th>Zip Code:</th>
+                    <td>{zip}</td>
+                  </tr>
                 </p>
               ) : null
           )}
-      </td>
+       </tbody>
     </table>
-    
+    </div>
+    </div>
+   
   );
-  <nav>
-      <ul>
-        <li>1</li>
-        <li>1</li>
-
-      </ul>
-    </nav>
+  
 };
 
 export default PaginationPage;

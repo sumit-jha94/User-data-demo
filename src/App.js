@@ -1,6 +1,6 @@
 import React from "react";
-// import Home from "./components/pages/Home";
-// import Details from "./components/pages/Details";
+import Home from "./components/pages/Home";
+import Details from "./components/pages/Details";
 import PaginationPage from "./components/pages/PaginationPage";
 // import HomeDummy from "./components/pages/HomeDummy";
 
