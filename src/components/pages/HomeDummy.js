@@ -9,7 +9,7 @@ export default function HomeDummy() {
   const [paginatedPost, setPaginatedPost] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [input, setInput] = useState('');
+  
   const [currentPage, setCurrentPage] = useState(1);
   const [order, setOrder] = useState("ASC");
 
@@ -68,30 +68,7 @@ export default function HomeDummy() {
     }
   }
 
-
-  const onInputChange = (ev) => {
-    setInput(ev.target.value);
-    searchUser(ev.target.value)
-  }
-
-  const onButton = (ev) => {
-    setInput(ev.target.value);
-    searchUser(ev.target.value)
-  }
-
-  async function searchUser(search){
-    
-    if(search != ''){
-      setData(null)
-      await fetchUser(1);
-      let filteredData = data.filter(x => String(x.first_name).toLowerCase().includes(search.toLowerCase()));
-  
-      setData(filteredData);
-    }else{
-      setData(null)
-      await fetchUser(1);
-    }
-  }
+  const [input, setInput] = useState('');
 
   const pageCount = data ? Math.ceil(data.length/pageSize):0;
   if (pageCount === 1) return null;
@@ -107,13 +84,16 @@ export default function HomeDummy() {
 
   return (
     <div>
-      <div className="float-xl-right">
+      <div className="input-group input-group-lg">
         <input type="text"
+       className="input-group-text"
         placeholder='Type Query'
         name="search"
-        onChange={onInputChange}
+        onChange={(e) =>{
+          setInput(e.target.value);
+        }}
         value={input} />
-        <button type='button' onClick={onButton}> Search</button>
+        
       </div>
 
       <h1 className="text-center text-primary text-uppercase">Data Sheet</h1>
@@ -136,11 +116,20 @@ export default function HomeDummy() {
             <tbody>
                 { 
                 paginatedPost &&
-                paginatedPost.map(({id, first_name, last_name, email, web, age})=> (
+                paginatedPost.filter(val=>{
+                  if (input === ''){
+                    return val;
+                  } else if(
+                    val.first_name.toLowerCase().includes(input.toLowerCase()) ||
+                    val.last_name.toLowerCase().includes(input.toLowerCase())
+                  ){
+                    return val
+                  }
+                }).map(({id, first_name, last_name, email, web, age})=> (
                         <tr key={id}>
                             <td className='table-primary'>{id}</td>
                             <td className='table-secondary'>
-                            <Link to={`/user/${id} `}>
+                            <Link to={`/user/${id} `} target="_blank">
                             {first_name} </Link>
                             </td>
                             <td className='table-success'>{last_name}</td>

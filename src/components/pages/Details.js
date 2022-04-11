@@ -1,15 +1,7 @@
-import { Button } from "bootstrap";
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import {
-  BrowserRouter as Router,
-  
-  Link,
-  Routes
-} from "react-router-dom";
-
-
-
+import {Link} from "react-router-dom";
 
 
 const Details = (props) => {
@@ -43,6 +35,7 @@ const Details = (props) => {
       });
   }, []);
 
+  
   
   return (
     <div className="row justify-content-center">
