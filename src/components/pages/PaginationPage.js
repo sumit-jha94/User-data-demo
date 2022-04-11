@@ -1,7 +1,7 @@
-import { Button } from "bootstrap";
+
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
+import {Link} from "react-router-dom";
 
 
 const PaginationPage = (props) => {
@@ -34,14 +34,12 @@ const PaginationPage = (props) => {
         setLoading(false);
       });
   }, []);
- 
-    
 
+  
+  
   return (
-
     <div className="row justify-content-center">
       <div className="col-auto">
-   
     <table className="table table-striped">
      
        <h2 className="  text-center text-danger text-uppercase">Full Details of data</h2>
@@ -59,7 +57,6 @@ const PaginationPage = (props) => {
                     <th >First Name:</th>
                     <td>{first_name}</td>
                   </tr>
-                  
 
                   <tr className="table-success " >
                     <th >Last Name:</th>
@@ -104,11 +101,14 @@ const PaginationPage = (props) => {
               ) : null
           )}
        </tbody>
+       <Link to="/"> <button className="btn btn-info" >Go Back</button></Link>
     </table>
     </div>
     </div>
    
   );
+
+ 
   
 };
 
