@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export default function Home() {
+export default function HomeDummy() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // const onLinkClick = = () => {
-  //   window.open("http://twitter.com/saigowthamr");
-  // };
 
   useEffect(() => {
     fetchUser(1);
   }, []);
 
   async function fetchUser(check=2) {
+      setLoading(true)
     if(check === 1 ){
       await fetch(`https://datapeace-storage.s3-us-west-2.amazonaws.com/dummy_data/users.json?_limit=20`)
       .then((response) => {
@@ -46,7 +43,6 @@ export default function Home() {
     console.log(ev.target.value)
     searchUser(ev.target.value)
   }
-
 
   const onButton = (ev) => {
     setInput(ev.target.value);
@@ -85,66 +81,36 @@ export default function Home() {
       {error && (
         <div>{`There is a problem fetching the post data - ${error}`}</div>
       )}
-      <table border="2" cellpadding="30" responsive="md">
-
-    
-
-      <td> <h3>Sr. No. </h3>
-              {data &&
-                data.map(({ id, first_name, last_name, email, web, age }) => (
-                    <ol key={id}> {id}</ol>
-               ))}
-               </td>
-
-
-         {/* First Name Table */}
-        <td> <h3>First Name </h3>
-
-              {data &&
-                data.map(({ id, first_name, last_name, email, web, age }) => (
-                  <Link to={`/user/${id} `}>
-                    <p key={id}> {first_name}</p>
-                    </Link>
-               ))}
-
-               </td>
-
-
-          {/* Last Name Table */}
-        <td > <h3>Last Name</h3>
-              {data &&
-                data.map(({ id, first_name, last_name, email, web, age }) => (
-                    <p key={id}>{last_name}</p>
-               ))}
-               </td>
-
-                {/* email Table */}
-        <td> <h3>Email Address</h3>
-              {data &&
-                data.map(({ id, first_name, last_name, email, web, age }) => (
-                    <p key={id}>{email}</p>
-               ))}
-               </td>
-
-               {/* web Table */}
-        <td> <h3>Website</h3>
-              {data &&
-                data.map(({ id, first_name, last_name, email, web, age }) => (
-                    <p key={id}>{web}</p>
-               ))}
-               </td>
-
-               {/* age Table */}
-                      <td> <h3>Age</h3>
-                        {data &&
-                          data.map(({ id, first_name, last_name, email, web, age }) => (
-                              <p key={id}>{age}</p>
-                      ))}
-                      </td>
-
-
-
-             </table>
+      <table className='table table-hover table-responsive' >
+            <thead>
+                <tr className='table-active'>
+                    <th className='table-primary'> Sr. No.</th>
+                    <th className='table-secondary'>First Name </th>
+                    <th className='table-success'>Last Name</th>
+                    <th className='table-danger'>Email Address</th>
+                    <th className='table-danger'>Website</th>
+                    <th className='table-danger'>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                { data &&
+                    data.map(({post, id, first_name, last_name, email, web, age, index})=> (
+                        <tr key={id}>
+                            <td className='table-primary'>{id}</td>
+                            
+                            <td className='table-secondary'>
+                            <Link to={`/user/${id} `}>
+                            {first_name} </Link>
+                            </td>
+                            <td className='table-success'>{last_name}</td>
+                            <td className='table-success'>{email}</td>
+                            <td className='table-success'>{web}</td>
+                            <td className='table-success'>{age}</td>
+                        </tr>
+                    ))}
+                
+            </tbody>
+        </table>
     </div>
   );
 }
