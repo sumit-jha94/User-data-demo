@@ -1,21 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import _ from "lodash";
+import { paginationClasses } from "@mui/material";
 
-let pageSize = 10;
+let pageSize = 50;
 export default function HomeDummy() {
   const [data, setData] = useState(null);
-  const [posts, setPosts] = useState();
+  const [paginatedPost, setPaginatedPost] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [input, setInput] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchUser(1);
   }, []);
 
-  const pageCount = posts ? Math.ceil(posts.length/pageSize):0;
-  if (pageCount === 1) return null;
-
+  
   async function fetchUser(check=2) {
       setLoading(true)
     if(check === 1 ){
@@ -30,7 +31,7 @@ export default function HomeDummy() {
       })
       .then((actualData) => {
         setData(actualData);
-        setPosts(actualData);
+        setPaginatedPost(_(actualData).slice(0).take(pageSize).value());
         setError(null);
       })
       .catch((err) => {
@@ -69,6 +70,18 @@ export default function HomeDummy() {
     }
   }
 
+  const pageCount = data ? Math.ceil(data.length/pageSize):0;
+  if (pageCount === 1) return null;
+
+  const pages = _.range(1, pageCount+1);
+
+  const pagination = (pageNo) => {
+    setCurrentPage(pageNo);
+    const startIndex = (pageNo - 1) * pageSize;
+    const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+    setPaginatedPost(paginatedPost)
+  }
+
   return (
     <div>
       <div className="float-xl-right">
@@ -99,8 +112,8 @@ export default function HomeDummy() {
             </thead>
             <tbody>
                 { 
-                data &&
-                data.map(({id, first_name, last_name, email, web, age})=> (
+                paginatedPost &&
+                paginatedPost.map(({id, first_name, last_name, email, web, age})=> (
                         <tr key={id}>
                             <td className='table-primary'>{id}</td>
                             <td className='table-secondary'>
@@ -117,24 +130,29 @@ export default function HomeDummy() {
             </tbody>
         </table>
 
-
-
-
         <nav className="Page navigation example">
           <ul className="pagination justify-content-center">
-            <ol className="page-item disabled page-link ">1</ol>
-            <ol className="page-item disabled page-link ">1</ol>
-            <ol className="page-item disabled page-link ">1</ol>
+
+                  {
+                    pages.map((data) =>(
+                      <li className={data === currentPage? "page-item active" : "page-item"}>
+                        
+                        <p className="page-link" 
+                        onClick={() =>pagination(data)}
+
+                        
+                        
+                        >{data}</p>
+                        
+                        </li>
+                    ))
+                  }
+
+            
+            
             
           </ul>
         </nav>
-
-
-
-
-
-
-
 
     </div>
   );

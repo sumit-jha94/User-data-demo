@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import { paginationClasses } from "@mui/material";
 
 let pageSize = 50;
 export default function HomeDummy() {
@@ -9,6 +10,7 @@ export default function HomeDummy() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [input, setInput] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchUser(1);
@@ -73,6 +75,13 @@ export default function HomeDummy() {
 
   const pages = _.range(1, pageCount+1);
 
+  const pagination = (pageNo) => {
+    setCurrentPage(pageNo);
+    const startIndex = (pageNo - 1) * pageSize;
+    const paginatedPost = _(data).slice(startIndex).take(pageSize).value();
+    setPaginatedPost(paginatedPost)
+  }
+
   return (
     <div>
       <div className="float-xl-right">
@@ -126,7 +135,16 @@ export default function HomeDummy() {
 
                   {
                     pages.map((data) =>(
-                      <li className="page-item disabled page-link ">{data}</li>
+                      <li className={data === currentPage? "page-item active" : "page-item"}>
+                        
+                        <p className="page-link" 
+                        onClick={() =>pagination(data)}
+
+                        
+                        
+                        >{data}</p>
+                        
+                        </li>
                     ))
                   }
 
